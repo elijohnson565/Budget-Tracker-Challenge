@@ -11,7 +11,6 @@ fetch("/api/transaction")
 
     populateTheTotal();
     populateTheTable();
-    populateTheChart();
   });
 
 function populateTheTotal() {
@@ -40,41 +39,6 @@ function populateTheTable() {
   });
 }
 
-function populateTheChart() {
-
-  let reversedArr = transactions.slice().reverse();
-  let sum = 0;
-
-  let labels = reversedArr.map(t => {
-    let date = new Date(t.date);
-    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-  });
-
-  let data = reversedArr.map(t => {
-    sum += parseInt(t.value);
-    return sum;
-  });
-
-  if (newChart) {
-    newChart.destroy();
-  }
-
-  let ctx = document.getElementById("newChart").getContext("2d");
-
-  newChart = new Chart(ctx, {
-    type: 'line',
-      data: {
-        labels,
-        datasets: [{
-            label: "Total Over Time",
-            fill: true,
-            backgroundColor: "#6666ff",
-            data
-        }]
-    }
-  });
-}
-
 function sendTransaction(isAdding) {
   let nameEl = document.querySelector("#t-name");
   let amountEl = document.querySelector("#t-amount");
@@ -100,7 +64,6 @@ function sendTransaction(isAdding) {
 
   transactions.unshift(transaction);
 
-  populateTheChart();
   populateTheTable();
   populateTheTotal();
   
